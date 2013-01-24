@@ -1,0 +1,12 @@
+C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\Bin\Debug\ApplicationIcon.png
+C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\Bin\Debug\Background.png
+C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\Bin\Debug\AudioRecorder.dll
+C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\Bin\Debug\AudioRecorder.pdb
+C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\Bin\Debug\AppManifest.xaml
+C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\Bin\Debug\AudioRecorder.xap
+C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\obj\Debug\App.g.i.cs
+C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\obj\Debug\MainPage.g.i.cs
+C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\obj\Debug\AudioRecorder.g.resources
+C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\obj\Debug\AudioRecorder.dll
+C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\obj\Debug\AudioRecorder.pdb
+C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\obj\Debug\XapCacheFile.xml
