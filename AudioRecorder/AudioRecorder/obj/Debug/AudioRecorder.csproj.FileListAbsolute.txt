@@ -10,3 +10,6 @@ C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\obj\Deb
 C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\obj\Debug\AudioRecorder.dll
 C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\obj\Debug\AudioRecorder.pdb
 C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\obj\Debug\XapCacheFile.xml
+C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\Bin\Debug\Microsoft.Phone.Controls.dll
+C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\Bin\Debug\Microsoft.Phone.Controls.xml
+C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\obj\Debug\Settings.g.i.cs

@@ -1,10 +1,12 @@
-﻿<xapCache source="C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\Bin\Debug\AudioRecorder.xap" wasSigned="False" certificateThumbprint="" TimeStampUrl="" lastWriteTime="1/23/2013 9:57:02 PM">
+﻿<xapCache source="C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\Bin\Debug\AudioRecorder.xap" wasSigned="False" certificateThumbprint="" TimeStampUrl="" lastWriteTime="1/24/2013 12:00:15 AM">
   <file source="C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\Bin\Debug\WMAppManifest.xml" archivePath="WMAppManifest.xml" lastWriteTime="1/23/2013 9:57:02 PM" />
   <file source="C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\Background.png" archivePath="Background.png" lastWriteTime="1/23/2013 9:54:48 PM" />
   <file source="C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\ApplicationIcon.png" archivePath="ApplicationIcon.png" lastWriteTime="1/23/2013 9:54:48 PM" />
-  <file source="C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\obj\Debug\AudioRecorder.dll" archivePath="AudioRecorder.dll" lastWriteTime="1/23/2013 9:57:02 PM" />
+  <file source="C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\obj\Debug\AudioRecorder.dll" archivePath="AudioRecorder.dll" lastWriteTime="1/24/2013 12:00:15 AM" />
+  <file source="C:\Program Files (x86)\Microsoft SDKs\Windows Phone\v7.1\Libraries\Silverlight\Microsoft.Phone.Controls.dll" archivePath="Microsoft.Phone.Controls.dll" lastWriteTime="3/19/2012 5:29:06 PM" />
+  <file source="C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\Media\appbar.save.rest.png" archivePath="Media\appbar.save.rest.png" lastWriteTime="1/23/2013 10:48:25 PM" />
   <file source="C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\SplashScreenImage.jpg" archivePath="SplashScreenImage.jpg" lastWriteTime="1/23/2013 9:54:48 PM" />
-  <file source="C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\Bin\Debug\AppManifest.xaml" archivePath="AppManifest.xaml" lastWriteTime="1/23/2013 9:57:02 PM" />
+  <file source="C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\Bin\Debug\AppManifest.xaml" archivePath="AppManifest.xaml" lastWriteTime="1/23/2013 10:24:28 PM" />
   <file source="C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\Bin\Debug\ApplicationIcon.png" archivePath="ApplicationIcon.png" lastWriteTime="1/23/2013 9:54:48 PM" />
   <file source="C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\Bin\Debug\Background.png" archivePath="Background.png" lastWriteTime="1/23/2013 9:54:48 PM" />
 </xapCache>
