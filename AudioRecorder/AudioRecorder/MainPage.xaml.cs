@@ -28,14 +28,16 @@ namespace AudioRecorder
             savedItems.Add(testSaved);
             for (int i = 0; i < 5; i++)
             {
-                savedItems.Add(new SavedAudio());
+                savedItems.Add(new SavedAudio());                
             }
             savedItemsList.ItemsSource = savedItems;
         }
 
         private void ApplicationBarMenuItem_Click(object sender, EventArgs e)
         {
-            
+
         }
+
+        
     }
 }

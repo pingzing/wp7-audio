@@ -19,7 +19,7 @@
             
             <controls:Pivot Title="{StaticResource AppNameUpper}">
                 <controls:PivotItem Header="record">
-                <Grid x:Name="Pivot1Root" Background="Transparent">
+                <Grid x:Name="Pivot1Root" Background="Transparent" Margin="0,-96,0,96">
                     <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,12,12,12">
                         
                     </StackPanel>
