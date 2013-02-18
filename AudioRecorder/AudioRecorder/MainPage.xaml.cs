@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
+using System.Collections.ObjectModel;
 
 namespace AudioRecorder
 {
@@ -21,23 +22,9 @@ namespace AudioRecorder
             InitializeComponent();
         }
 
-        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
+        private void Settings_Click(object sender, System.EventArgs e)
         {
-            SavedAudio testSaved = new SavedAudio();
-            List<SavedAudio> savedItems = new List<SavedAudio>();
-            savedItems.Add(testSaved);
-            for (int i = 0; i < 5; i++)
-            {
-                savedItems.Add(new SavedAudio());                
-            }
-            savedItemsList.ItemsSource = savedItems;
+            ((PhoneApplicationFrame)App.Current.RootVisual).Navigate(new Uri("/Settings.xaml", UriKind.Relative));
         }
-
-        private void ApplicationBarMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        
     }
 }

@@ -7,28 +7,35 @@
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:ec="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
+    xmlns:vm="clr-namespace:AudioRecorder.ViewModels"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
-    shell:SystemTray.IsVisible="True" Loaded="PhoneApplicationPage_Loaded">
+    shell:SystemTray.IsVisible="True">
+    
+    <phone:PhoneApplicationPage.Resources>
+        <vm:MainPageViewModel x:Key="ViewModel" />
+    </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">            
+    <Grid x:Name="LayoutRoot" Background="Transparent" DataContext="{Binding Source={StaticResource ViewModel}}">            
             
-            <controls:Pivot Title="{StaticResource AppNameUpper}">
+            <controls:Pivot Title="AUDIO RECORDER">
                 <controls:PivotItem Header="record">
-                <Grid x:Name="Pivot1Root" Background="Transparent" Margin="0,-96,0,96">
-                    <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,12,12,12">
-                        
-                    </StackPanel>
-                </Grid>                                 
+                <Button x:Name="recordButton" Content="Record" HorizontalAlignment="Center" Height="106" 
+                        VerticalAlignment="Center" Width="304" Margin="0"/>                                 
             </controls:PivotItem>
                 
                 <controls:PivotItem Header="saved">
                 <Grid x:Name="Pivot2Root" Background="Transparent">
-                    <ListBox x:Name="savedItemsList" Margin="0,0,0,0">
+                    <ListBox x:Name="savedItemsList" Margin="12,0,12,0"
+                             toolkit:TiltEffect.IsTiltEnabled="True" 
+                             ItemsSource="{Binding ListItemsSource}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -40,9 +47,12 @@
                                         <ColumnDefinition Width="300"/>
                                         <ColumnDefinition Width="90" />                                        
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Name="FileName" Text="{Binding FileName}" FontSize="{StaticResource PhoneFontSizeLarge}" />
-                                    <TextBlock Grid.Row="0" Grid.Column="1" Name="FileSize" Text="{Binding FileSize}" FontSize="{StaticResource PhoneFontSizeLarge}" />
-                                    <TextBlock Name="File Description" Grid.Row="1" Text="{Binding Description}" FontSize="{StaticResource PhoneFontSizeSmall}" />
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Name="FileName" Text="{Binding FileName}"
+                                               FontSize="{StaticResource PhoneFontSizeLarge}" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Name="FileSize" Text="{Binding FileSize}"
+                                               FontSize="{StaticResource PhoneFontSizeLarge}" />
+                                    <TextBlock Grid.Row="1" Grid.Column="2" Name="File Description" Text="{Binding Description}" 
+                                               FontSize="{StaticResource PhoneFontSizeSmall}" />
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -58,9 +68,9 @@
     <!--Sample code showing usage of ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Media/appbar.save.rest.png" Text="save"/>
+            <shell:ApplicationBarIconButton IconUri="/Media/appbar.save.rest.png" Text="save" IsEnabled="False"/>
             <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="settings" Click="ApplicationBarMenuItem_Click" />
+                <shell:ApplicationBarMenuItem Text="settings" Click="Settings_Click"/>
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>

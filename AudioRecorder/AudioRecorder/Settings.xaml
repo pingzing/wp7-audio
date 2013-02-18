@@ -6,6 +6,10 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:c4ftoolkit="clr-namespace:Coding4Fun.Toolkit.Controls;assembly=Coding4Fun.Toolkit.Controls"
+    xmlns:vm="clr-namespace:AudioRecorder.ViewModels"
+    xmlns:helpers="clr-namespace:AudioRecorder.Helpers"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -13,21 +17,35 @@
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True">
 
+    <phone:PhoneApplicationPage.Resources>
+        <vm:SettingsViewModel x:Key="ViewModel" />
+        <helpers:BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </phone:PhoneApplicationPage.Resources>   
+        
+
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot" Background="Transparent" DataContext="{Binding Source={StaticResource ViewModel}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+                
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="{StaticResource AppNameUpper}" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="Settings" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,0,12,0">
+            <TextBlock x:Name="ApplicationTitle" Text="AUDIO RECORDER" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="PageTitle" Text="settings" Margin="12,0,12,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0"></Grid>
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,12,12,0">
+            <StackPanel>
+                <TextBlock Grid.Column="1" x:Name="settingText1" Text="Set max recording length" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                <toolkit:ToggleSwitch Grid.Column="2" x:Name="settingSwitch1" IsChecked="{Binding Switch1_Value, Mode=TwoWay}"/>
+                <c4ftoolkit:TimeSpanPicker Value="{Binding TimeSpan_Value, Mode=TwoWay}" 
+                                           Visibility="{Binding Switch1_Value, Converter={StaticResource BoolToVisibilityConverter}}" />
+            </StackPanel>
+        </Grid>
     </Grid>
  
     <!--Sample code showing usage of ApplicationBar-->
