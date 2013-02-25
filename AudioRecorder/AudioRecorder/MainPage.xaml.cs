@@ -26,5 +26,10 @@ namespace AudioRecorder
         {
             ((PhoneApplicationFrame)App.Current.RootVisual).Navigate(new Uri("/Settings.xaml", UriKind.Relative));
         }
+
+        private void recordButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

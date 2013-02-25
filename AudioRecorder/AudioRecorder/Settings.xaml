@@ -43,6 +43,8 @@
                 <TextBlock Grid.Column="1" x:Name="settingText1" Text="Set max recording length" Style="{StaticResource PhoneTextSubtleStyle}"/>
                 <toolkit:ToggleSwitch Grid.Column="2" x:Name="settingSwitch1" IsChecked="{Binding Switch1_Value, Mode=TwoWay}"/>
                 <c4ftoolkit:TimeSpanPicker Value="{Binding TimeSpan_Value, Mode=TwoWay}" 
+                                           Max="{Binding TimeSpanMaxTime}" 
+                                           Step="{Binding TimeSpan5Min}"
                                            Visibility="{Binding Switch1_Value, Converter={StaticResource BoolToVisibilityConverter}}" />
             </StackPanel>
         </Grid>

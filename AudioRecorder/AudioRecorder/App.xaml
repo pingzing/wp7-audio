@@ -4,7 +4,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
-    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone">
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:helpers="clr-namespace:AudioRecorder.Helpers">
   <!--Application Resources-->
   <Application.Resources>
   </Application.Resources>
@@ -14,5 +15,6 @@
                                    Closing="Application_Closing" 
                                    Activated="Application_Activated" 
                                    Deactivated="Application_Deactivated" />
-  </Application.ApplicationLifetimeObjects>
+        <helpers:XNAFrameworkDispatcherService/>
+    </Application.ApplicationLifetimeObjects>
 </Application>

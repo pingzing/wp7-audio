@@ -28,7 +28,7 @@
             <controls:Pivot Title="AUDIO RECORDER">
                 <controls:PivotItem Header="record">
                 <Button x:Name="recordButton" Content="Record" HorizontalAlignment="Center" Height="106" 
-                        VerticalAlignment="Center" Width="304" Margin="0"/>                                 
+                        VerticalAlignment="Center" Width="304" Margin="0" Command="{Binding RecordCommand}" />                                 
             </controls:PivotItem>
                 
                 <controls:PivotItem Header="saved">
