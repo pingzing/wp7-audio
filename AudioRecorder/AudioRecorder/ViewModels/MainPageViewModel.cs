@@ -6,17 +6,21 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace AudioRecorder.ViewModels
 {
     public class MainPageViewModel : ViewModelBase
     {
         private const int MEMORY_STREAM_SIZE = 1048576;
+        private const string AUDIO_XML_FILENAME = "savedAudio.xml";
                 
         private Microphone currentMicrophone;
         private int sampleRate;
@@ -27,17 +31,54 @@ namespace AudioRecorder.ViewModels
 
         public MainPageViewModel()
         {
-            //Test values. Remove these later            
+            //Try opening the XML file that contains the list of recordings.
+            try
+            {
+                using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    if (isoStore.FileExists(AUDIO_XML_FILENAME))
+                    {
+                        //then open it and use it to populate the savedAudio collection
+                        using (IsolatedStorageFileStream stream = isoStore.OpenFile(AUDIO_XML_FILENAME, FileMode.Open))
+                        {
+                            XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<SavedAudio>));
+                            savedAudio = (ObservableCollection<SavedAudio>)serializer.Deserialize(stream);
+                            ListItemsSource = savedAudio;
+                        }
+                    }
+                    else
+                    {
+                        //create it for the first time
+                        XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
+                        xmlWriterSettings.Indent = true;
+                        using (IsolatedStorageFileStream stream = isoStore.OpenFile(AUDIO_XML_FILENAME, FileMode.Create))
+                        {
+                            XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<SavedAudio>));
+                            using (XmlWriter xmlWriter = XmlWriter.Create(stream, xmlWriterSettings))
+                            {
+                                serializer.Serialize(xmlWriter, GenerateFirstTimeData());
+                                //Note: this doesn't properly update the list on the "saved" page on first boot.
+                            }
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
+
+            this.recordCommand = new DelegateCommand(this.RecordAction);
+            this.stopCommand = new DelegateCommand(this.RequestStopRecordingAction);            
+        }
+
+        private object GenerateFirstTimeData()
+        {
             SavedAudio file1 = new SavedAudio();
             SavedAudio file2 = new SavedAudio();
             savedAudio.Add(file1);
             savedAudio.Add(file2);
-            ListItemsSource = savedAudio;
-            //End test values
-
-            this.recordCommand = new DelegateCommand(this.RecordAction);
-            this.stopCommand = new DelegateCommand(this.RequestStopRecordingAction);
-
+            return savedAudio;
         }
 
         //The source property of the list that populates the "saved" page.
@@ -94,18 +135,36 @@ namespace AudioRecorder.ViewModels
             this.currentMicrophone.Stop();
             UpdateHeader(this.currentRecordingStream);
 
-            var isoStore = System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication();
+            var isoStore = IsolatedStorageFile.GetUserStoreForApplication();
+            
+            //Generate a unique filename with a GUID
+            string filePath = System.Guid.NewGuid().ToString();
 
-            using (var targetFile = isoStore.CreateFile("newFile.wav"))
-            {
-                //Write to Isolated Storage, update list, create WAVE header, etc etc etc.                
+            //Write to Isolated Storage, update list, create WAVE header, etc etc etc.
+            using (var targetFile = isoStore.CreateFile(filePath+".wav"))
+            {                                
                 var dataBuffer = this.currentRecordingStream.GetBuffer();
-                targetFile.Write(dataBuffer, 0, (int)this.currentRecordingStream.Length);                
-                SavedAudio newFile = new SavedAudio((int)targetFile.Length, "newFile", "Loooooooooooooong Description", DateTime.Now, "\newFile.wav", "\\");
+                targetFile.Write(dataBuffer, 0, (int)this.currentRecordingStream.Length); 
+                //Debug values below. Generate these dynamically later
+                SavedAudio newFile = new SavedAudio((int)targetFile.Length, filePath, "Loooooooooooooong Description", DateTime.Now, "\\"+filePath, "\\");
                 savedAudio.Add(newFile);
                 targetFile.Flush();
-                targetFile.Close();
+                targetFile.Close();                
             }
+
+            /*TODO:
+            Add a block that appends the newly-created file to the XML_SAVED_AUDIO.             
+             */
+            //DEBUG PRINT BLOCK
+            using (var isoUserStore = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                string[] listOfFiles = isoUserStore.GetFileNames();
+                foreach (string file in listOfFiles)
+                {
+                    System.Diagnostics.Debug.WriteLine("File: " + file);
+                }
+            }
+            //END DEBUG
         }
 
         public void WriteHeader(Stream stream, int sampleRate)
