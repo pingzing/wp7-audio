@@ -27,8 +27,12 @@
             
             <controls:Pivot Title="AUDIO RECORDER">
                 <controls:PivotItem Header="record">
-                <Button x:Name="recordButton" Content="Record" HorizontalAlignment="Center" Height="106" 
-                        VerticalAlignment="Center" Width="304" Margin="0" Command="{Binding RecordCommand}" />                                 
+                <StackPanel>
+                    <Button x:Name="recordButton" Content="Record" HorizontalAlignment="Center" Height="106" 
+                        VerticalAlignment="Center" Width="304" Margin="0" Command="{Binding RecordCommand}" />
+                    <Button x:Name="stopButton" Content="Stop" HorizontalAlignment="Center" Height="106" 
+                        VerticalAlignment="Center" Width="304" Margin="0" Command="{Binding StopCommand}" />
+                </StackPanel>
             </controls:PivotItem>
                 
                 <controls:PivotItem Header="saved">
@@ -51,8 +55,8 @@
                                                FontSize="{StaticResource PhoneFontSizeLarge}" />
                                     <TextBlock Grid.Row="0" Grid.Column="1" Name="FileSize" Text="{Binding FileSize}"
                                                FontSize="{StaticResource PhoneFontSizeLarge}" />
-                                    <TextBlock Grid.Row="1" Grid.Column="2" Name="File Description" Text="{Binding Description}" 
-                                               FontSize="{StaticResource PhoneFontSizeSmall}" />
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Name="File Description" Text="{Binding Description}" 
+                                               FontSize="{StaticResource PhoneFontSizeSmall}" RenderTransformOrigin="0.551,0.48" Grid.ColumnSpan="2" />
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
