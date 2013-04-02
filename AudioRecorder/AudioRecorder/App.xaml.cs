@@ -63,6 +63,8 @@ namespace AudioRecorder
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
+
+            //ISOLATED STORAGE 1
             IsolatedStorageExplorer.Explorer.Start("localhost");
         }
 
@@ -70,6 +72,7 @@ namespace AudioRecorder
         // This code will not execute when the application is first launched
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
+            //ISOLATED STORAGE 2
             IsolatedStorageExplorer.Explorer.RestoreFromTombstone();
         }
 

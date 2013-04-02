@@ -18,8 +18,9 @@ namespace AudioRecorder
     {
         // Constructor
         public MainPage()
-        {
+        {            
             InitializeComponent();
+            this.DataContext = new AudioRecorder.ViewModels.MainPageViewModel();
         }
 
         private void Settings_Click(object sender, System.EventArgs e)
@@ -27,9 +28,10 @@ namespace AudioRecorder
             ((PhoneApplicationFrame)App.Current.RootVisual).Navigate(new Uri("/Settings.xaml", UriKind.Relative));
         }
 
-        private void recordButton_Click(object sender, RoutedEventArgs e)
+        private void Save_Click(object sender, System.EventArgs e)
         {
-
+            var viewModel = (AudioRecorder.ViewModels.MainPageViewModel)this.DataContext;
+            viewModel.SaveRecording();
         }
     }
 }

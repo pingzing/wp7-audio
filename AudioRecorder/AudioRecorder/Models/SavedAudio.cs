@@ -17,7 +17,10 @@ namespace AudioRecorder
         private int fileSize;
         public int FileSize
         {
-            get { return this.fileSize; }
+            get 
+            {
+                return this.fileSize; 
+            }
             set
             {
                 if (this.fileSize != value)
