@@ -65,7 +65,7 @@ namespace AudioRecorder
         {
 
             //ISOLATED STORAGE 1
-            IsolatedStorageExplorer.Explorer.Start("localhost");
+           // IsolatedStorageExplorer.Explorer.Start("localhost");
         }
 
         // Code to execute when the application is activated (brought to foreground)
@@ -73,7 +73,7 @@ namespace AudioRecorder
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
             //ISOLATED STORAGE 2
-            IsolatedStorageExplorer.Explorer.RestoreFromTombstone();
+            //IsolatedStorageExplorer.Explorer.RestoreFromTombstone();
         }
 
         // Code to execute when the application is deactivated (sent to background)

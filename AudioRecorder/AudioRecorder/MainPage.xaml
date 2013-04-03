@@ -20,12 +20,29 @@
     
     <phone:PhoneApplicationPage.Resources>
         <vm:MainPageViewModel x:Key="ViewModel" />
+        
+        <shell:ApplicationBar x:Key="savedAppBar" IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Media/appbar.save.rest.png" Text="play" IsEnabled="False" Click="Play_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Media/appbar.save.rest.png" Text="edit" IsEnabled="False" Click="Edit_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Media/appbar.save.rest.png" Text="select" IsEnabled="True" Click="Select_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Media/appbar.save.rest.png" Text="delete" IsEnabled="False" Click="Delete_Click"/>
+            <shell:ApplicationBar.MenuItems>
+                <!--Menu Items Here-->
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>        
+        
+            <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" x:Key="recordAppBar">
+                <shell:ApplicationBarIconButton x:Name="AppBarIconButton" IconUri="/Media/appbar.save.rest.png" Text="save" 
+                                           IsEnabled="False" Click="Save_Click" />
+                <shell:ApplicationBar.MenuItems>
+                    <shell:ApplicationBarMenuItem Text="settings" Click="Settings_Click"/>
+                </shell:ApplicationBar.MenuItems>
+            </shell:ApplicationBar>
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
-            
-            <controls:Pivot Title="AUDIO RECORDER">
+    <Grid x:Name="LayoutRoot" Background="Transparent">        
+        <controls:Pivot Title="AUDIO RECORDER" SelectionChanged="Pivot_SelectionChanged">
                 <controls:PivotItem Header="record">
                 <StackPanel>
                     <Button x:Name="recordButton" Content="Record" HorizontalAlignment="Center" Height="106" 
@@ -35,11 +52,13 @@
                 </StackPanel>
             </controls:PivotItem>
                 
-                <controls:PivotItem Header="saved">
+                <controls:PivotItem Header="saved" x:Name="savedPivotItem">
                 <Grid x:Name="Pivot2Root" Background="Transparent">
+                    
                     <ListBox x:Name="savedItemsList" Margin="12,0,12,0"
                              toolkit:TiltEffect.IsTiltEnabled="True" 
-                             ItemsSource="{Binding ListItemsSource}">
+                             ItemsSource="{Binding ListItemsSource}"
+                             SelectedItem="{Binding SelectedAudio, Mode=TwoWay}" SelectionChanged="savedItemsList_SelectionChanged">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -48,14 +67,16 @@
                                         <RowDefinition Height="*"   />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="300"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="290"/>
                                         <ColumnDefinition Width="90" />                                        
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock TextTrimming="WordEllipsis" Grid.Row="0" Grid.Column="0" Name="FileName" Text="{Binding FileName}"
+                                    <CheckBox x:Name="selectCheckBoxes" Grid.Column="0" Visibility="Collapsed" IsChecked="False"/>
+                                    <TextBlock TextTrimming="WordEllipsis" Grid.Row="0" Grid.Column="1" Name="FileName" Text="{Binding FileName}"
                                                FontSize="{StaticResource PhoneFontSizeLarge}" />
-                                    <TextBlock Grid.Row="0" Grid.Column="1" Name="FileSize" Text="{Binding FileSize}" TextAlignment="Right"
+                                    <TextBlock Grid.Row="0" Grid.Column="2" Name="FileSize" Text="{Binding FileSize}" TextAlignment="Right"
                                                FontSize="{StaticResource PhoneFontSizeLarge}" />
-                                    <TextBlock Grid.Row="1" Grid.Column="0" Name="File Description" Text="{Binding Description}" 
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Name="File Description" Text="{Binding Description}" 
                                                FontSize="{StaticResource PhoneFontSizeSmall}" RenderTransformOrigin="0.551,0.48" Grid.ColumnSpan="2"
                                                TextWrapping="Wrap"/>
                                 </Grid>
@@ -71,14 +92,6 @@
     </Grid>
  
     <!--Sample code showing usage of ApplicationBar-->
-    <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton x:Name="AppBarIconButton" IconUri="/Media/appbar.save.rest.png" Text="save" 
-                                           IsEnabled="False" Click="Save_Click" />
-            <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="settings" Click="Settings_Click"/>
-            </shell:ApplicationBar.MenuItems>
-        </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>
+
 
 </phone:PhoneApplicationPage>

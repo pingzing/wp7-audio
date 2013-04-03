@@ -2,6 +2,7 @@
 using AudioRecorder.ViewModels;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using System;
 using System.Collections.Generic;
@@ -47,8 +48,7 @@ namespace AudioRecorder.ViewModels
                         {
                             XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<SavedAudio>));
                             savedAudio = (ObservableCollection<SavedAudio>)serializer.Deserialize(stream);
-                            ListItemsSource = savedAudio;
-                            stream.Close();
+                            ListItemsSource = savedAudio;                            
                         }                        
                     }
                     else
@@ -62,16 +62,14 @@ namespace AudioRecorder.ViewModels
                             using (XmlWriter xmlWriter = XmlWriter.Create(stream, xmlWriterSettings))
                             {
                                 serializer.Serialize(xmlWriter, GenerateFirstTimeData());                                                             
-                            }
-                            stream.Close();                            
+                            }                                                   
                         }
                         //And populate the newly-created file
                         using (IsolatedStorageFileStream stream = isoStore.OpenFile(AUDIO_XML_FILENAME, FileMode.Open))
                         {
                             XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<SavedAudio>));
                             savedAudio = (ObservableCollection<SavedAudio>)serializer.Deserialize(stream);
-                            ListItemsSource = savedAudio;
-                            stream.Close();
+                            ListItemsSource = savedAudio;                            
                         }
                     }
                 }
@@ -256,6 +254,47 @@ namespace AudioRecorder.ViewModels
             set { recordingInMemory = value; }
         }
 
+        private SavedAudio selectedAudio;
+        public SavedAudio SelectedAudio
+        {
+            get { return selectedAudio; }
+            set
+            {
+                if (value != null && value is SavedAudio)
+                {
+                    selectedAudio = value;
+                }
+            }
+        }
+
+        //TODO: Make this entire method more robust, maybe fiddle with filenaming in the save function
+        //Ensure that it stops any previous sounds playing when it starts the new one. Overlap is bad
+        public void PlaySelected()
+        {
+            try
+            {
+                using (var isoStore = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    if (isoStore.FileExists(selectedAudio.FilePath))
+                    {
+                        using (IsolatedStorageFileStream fileStream = new IsolatedStorageFileStream(selectedAudio.FilePath, FileMode.Open, isoStore))
+                        {
+                            if (fileStream != null)
+                            {
+                                var effect = SoundEffect.FromStream(fileStream);
+                                effect.Play();
+                            }
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
+ 
+        }
+
         public void SaveRecording()
         {
             var isoStore = IsolatedStorageFile.GetUserStoreForApplication();
@@ -269,7 +308,7 @@ namespace AudioRecorder.ViewModels
                 var dataBuffer = currentDataBuffer;
                 targetFile.Write(dataBuffer, 0, (int)this.currentRecordingStream.Length);
                 //Debug values below. Generate these dynamically later
-                SavedAudio newFile = new SavedAudio((int)targetFile.Length, filePath, "Loooooooooooooog Description", DateTime.Now, "\\" + filePath, "\\" + filePath);
+                SavedAudio newFile = new SavedAudio((int)targetFile.Length, filePath, "Loooooooooooooog Description", DateTime.Now, "\\" + filePath+".wav", "\\" + filePath+".wav");
                 savedAudio.Add(newFile);
                 targetFile.Flush();
                 targetFile.Close();
@@ -277,9 +316,7 @@ namespace AudioRecorder.ViewModels
             recordingInMemory = false;
             ToggleSaveButton();
 
-            /*TODO:
-            Add a block that appends the newly-created file to the XML_SAVED_AUDIO.             
-             */
+            //Update the XML file with the newly-saved file.
             try
             {
                 using (isoStore)
@@ -313,6 +350,7 @@ namespace AudioRecorder.ViewModels
                 }
             }
             //END DEBUG
+            isoStore.Dispose();
         }
     }
 }

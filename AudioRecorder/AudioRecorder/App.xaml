@@ -7,8 +7,8 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:helpers="clr-namespace:AudioRecorder.Helpers">
   <!--Application Resources-->
-  <Application.Resources>
-  </Application.Resources>
+  <Application.Resources>       
+    </Application.Resources>
   <Application.ApplicationLifetimeObjects>
     <!--Required object that handles lifetime events for the application-->
     <shell:PhoneApplicationService Launching="Application_Launching" 
