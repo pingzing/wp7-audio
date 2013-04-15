@@ -32,7 +32,6 @@ namespace AudioRecorder.ViewModels
         MemoryStream currentRecordingStream;
         public byte[] currentDataBuffer;
         ObservableCollection<SavedAudio> savedAudio = new ObservableCollection<SavedAudio>();
-        SavedAudio storedSingleFile = new SavedAudio();
 
         public MainPageViewModel()
         {          
@@ -292,7 +291,19 @@ namespace AudioRecorder.ViewModels
             {
                 System.Diagnostics.Debug.WriteLine(ex.Message);
             }
- 
+        }
+
+        public void UpdateEditedFile(SavedAudio editedSavedAudio)
+        {
+            //TODO: Update the XML file when we're leaving the app, so nothing goes haywire (see App.xaml.cs)
+            int index = savedAudio.IndexOf(selectedAudio);
+            //This fires anytime we load MainPage, so ensure that something is actually selected before doing anything
+            if (index >= 0)
+            {
+                savedAudio.ElementAt(index).Description = editedSavedAudio.Description;
+                savedAudio.ElementAt(index).FileName = editedSavedAudio.FileName;              
+            }
+          
         }
 
         public void SaveRecording()
@@ -307,7 +318,7 @@ namespace AudioRecorder.ViewModels
             {
                 var dataBuffer = currentDataBuffer;
                 targetFile.Write(dataBuffer, 0, (int)this.currentRecordingStream.Length);
-                //Debug values below. Generate these dynamically later
+                //TODO: Debug values below. Generate these dynamically later
                 SavedAudio newFile = new SavedAudio((int)targetFile.Length, filePath, "Loooooooooooooog Description", DateTime.Now, "\\" + filePath+".wav", "\\" + filePath+".wav");
                 savedAudio.Add(newFile);
                 targetFile.Flush();
@@ -323,7 +334,8 @@ namespace AudioRecorder.ViewModels
                 {
                     if (isoStore.FileExists(AUDIO_XML_FILENAME))
                     {
-                        //then open it and append the new file to it (atm, just recreating entire XML using the savedAudio collection. change to single append later)
+                        //then open it and append the new file to it 
+                        //TODO: (atm, just recreating entire XML using the savedAudio collection. change to single append later)
                         using (IsolatedStorageFileStream stream = isoStore.OpenFile(AUDIO_XML_FILENAME, FileMode.Open))
                         {
                             XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<SavedAudio>));
@@ -352,5 +364,6 @@ namespace AudioRecorder.ViewModels
             //END DEBUG
             isoStore.Dispose();
         }
+        
     }
 }

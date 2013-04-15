@@ -18,14 +18,37 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     shell:SystemTray.IsVisible="True">
     
+    <!--Transition Code-->
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn"/>
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn"/>
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut"/>
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut"/>
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+    <!--End transition code -->
+   
+    
     <phone:PhoneApplicationPage.Resources>
         <vm:MainPageViewModel x:Key="ViewModel" />
         
         <shell:ApplicationBar x:Key="savedAppBar" IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Media/appbar.save.rest.png" Text="play" IsEnabled="False" Click="Play_Click"/>
-            <shell:ApplicationBarIconButton IconUri="/Media/appbar.save.rest.png" Text="edit" IsEnabled="False" Click="Edit_Click"/>
-            <shell:ApplicationBarIconButton IconUri="/Media/appbar.save.rest.png" Text="select" IsEnabled="True" Click="Select_Click"/>
-            <shell:ApplicationBarIconButton IconUri="/Media/appbar.save.rest.png" Text="delete" IsEnabled="False" Click="Delete_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Media/appbar.transport.play.rest.png" Text="play" IsEnabled="False" Click="Play_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Media/appbar.edit.rest.png" Text="edit" IsEnabled="False" Click="Edit_Click"/>            
+            <shell:ApplicationBarIconButton IconUri="/Media/appbar.delete.rest.png" Text="delete" IsEnabled="False" Click="Delete_Click"/>
             <shell:ApplicationBar.MenuItems>
                 <!--Menu Items Here-->
             </shell:ApplicationBar.MenuItems>
@@ -57,7 +80,7 @@
                     
                     <ListBox x:Name="savedItemsList" Margin="12,0,12,0"
                              toolkit:TiltEffect.IsTiltEnabled="True" 
-                             ItemsSource="{Binding ListItemsSource}"
+                             ItemsSource="{Binding ListItemsSource, Mode=TwoWay}"
                              SelectedItem="{Binding SelectedAudio, Mode=TwoWay}" SelectionChanged="savedItemsList_SelectionChanged">
                         <ListBox.ItemTemplate>
                             <DataTemplate>

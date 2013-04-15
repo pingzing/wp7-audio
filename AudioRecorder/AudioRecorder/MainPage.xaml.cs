@@ -12,6 +12,7 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using System.Collections.ObjectModel;
 using Microsoft.Phone.Shell;
+using System.Windows.Navigation;
 
 namespace AudioRecorder
 {
@@ -26,19 +27,19 @@ namespace AudioRecorder
 
         private void Settings_Click(object sender, System.EventArgs e)
         {
-            ((PhoneApplicationFrame)App.Current.RootVisual).Navigate(new Uri("/Settings.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Settings.xaml", UriKind.Relative));
         }
 
         private void Play_Click(object sender, System.EventArgs e)
         {
             var viewModel = (AudioRecorder.ViewModels.MainPageViewModel)this.DataContext;
             viewModel.PlaySelected();
- 
         }
 
         private void Edit_Click(object sender, System.EventArgs e)
         {
- 
+            ((App)App.Current).sharedAudio = (SavedAudio)savedItemsList.SelectedItem;
+            NavigationService.Navigate(new Uri("/EditPage.xaml", UriKind.Relative));
         }
 
         private void Select_Click(object sender, System.EventArgs e)
@@ -83,8 +84,15 @@ namespace AudioRecorder
             {
                 ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).IsEnabled = true;
                 ((ApplicationBarIconButton)ApplicationBar.Buttons[1]).IsEnabled = true;
-                ((ApplicationBarIconButton)ApplicationBar.Buttons[3]).IsEnabled = true;
+                ((ApplicationBarIconButton)ApplicationBar.Buttons[2]).IsEnabled = true;
             }
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            var viewModel = (AudioRecorder.ViewModels.MainPageViewModel)this.DataContext;
+            viewModel.UpdateEditedFile(((App)App.Current).sharedAudio);
         }
     }
 }
