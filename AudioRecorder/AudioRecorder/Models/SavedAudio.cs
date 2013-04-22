@@ -87,16 +87,16 @@ namespace AudioRecorder
             }
         }
 
-        private string sourcePath;
-        public string SourcePath 
+        private TimeSpan duration;
+        public TimeSpan Duration
         {
-            get { return this.sourcePath; }
-            set
+            get { return this.duration; }
+            set 
             {
-                if (this.sourcePath != value)
+                if (this.duration != value)
                 {
-                    this.sourcePath = value;
-                    OnPropertyChanged("SourcePath");
+                    this.duration = value;
+                    OnPropertyChanged("Duration");
                 }
             }
         }
@@ -110,14 +110,14 @@ namespace AudioRecorder
             this.Description = "Blah";
         }
 
-        public SavedAudio(int fileSize, string fileName, string description, DateTime timeStamp, string filePath, string sourcePath)
+        public SavedAudio(int fileSize, string fileName, string description, DateTime timeStamp, string filePath, TimeSpan duration)
         {
             this.fileSize = fileSize;
             this.fileName = fileName;
             this.description = description;
             this.timeStamp = timeStamp;
             this.filePath = filePath;
-            this.sourcePath = sourcePath;
+            this.duration = duration;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

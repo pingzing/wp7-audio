@@ -85,6 +85,7 @@
     </Compile>
     <Compile Include="Helpers\BooleanToVisibilityConverter.cs" />
     <Compile Include="Helpers\DelegateCommand.cs" />
+    <Compile Include="Helpers\TimespanToDateTimeConverter.cs" />
     <Compile Include="Helpers\XNAFrameworkDispatcherService.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -123,6 +124,8 @@
     <None Include="Properties\WMAppManifest.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Media\appbar.check.rest.png" />
+    <Content Include="Media\appbar.close.rest.png" />
     <Content Include="Media\appbar.delete.rest.png" />
     <Content Include="Media\appbar.edit.rest.png" />
     <Content Include="Media\appbar.save.rest.png" />

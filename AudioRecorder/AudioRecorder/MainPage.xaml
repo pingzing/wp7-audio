@@ -11,11 +11,12 @@
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:ec="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
     xmlns:vm="clr-namespace:AudioRecorder.ViewModels"
+    xmlns:helpers="clr-namespace:AudioRecorder.Helpers"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="Portrait" Orientation="Portrait"
+    SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
     shell:SystemTray.IsVisible="True">
     
     <!--Transition Code-->
@@ -44,6 +45,7 @@
     
     <phone:PhoneApplicationPage.Resources>
         <vm:MainPageViewModel x:Key="ViewModel" />
+        <helpers:TimespanToDateTimeConverter x:Key="TStoDTConverter"/>
         
         <shell:ApplicationBar x:Key="savedAppBar" IsVisible="True" IsMenuEnabled="True">
             <shell:ApplicationBarIconButton IconUri="/Media/appbar.transport.play.rest.png" Text="play" IsEnabled="False" Click="Play_Click"/>
@@ -65,7 +67,7 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">        
-        <controls:Pivot Title="AUDIO RECORDER" SelectionChanged="Pivot_SelectionChanged">
+        <controls:Pivot x:Name="MainPagePivot" Title="AUDIO RECORDER" SelectionChanged="Pivot_SelectionChanged">
                 <controls:PivotItem Header="record">
                 <StackPanel>
                     <Button x:Name="recordButton" Content="Record" HorizontalAlignment="Center" Height="106" 
@@ -86,7 +88,7 @@
                             <DataTemplate>
                                 <Grid>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
                                         <RowDefinition Height="*"   />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
@@ -95,13 +97,17 @@
                                         <ColumnDefinition Width="90" />                                        
                                     </Grid.ColumnDefinitions>
                                     <CheckBox x:Name="selectCheckBoxes" Grid.Column="0" Visibility="Collapsed" IsChecked="False"/>
-                                    <TextBlock TextTrimming="WordEllipsis" Grid.Row="0" Grid.Column="1" Name="FileName" Text="{Binding FileName}"
-                                               FontSize="{StaticResource PhoneFontSizeLarge}" />
-                                    <TextBlock Grid.Row="0" Grid.Column="2" Name="FileSize" Text="{Binding FileSize}" TextAlignment="Right"
-                                               FontSize="{StaticResource PhoneFontSizeLarge}" />
+                                    <TextBlock TextTrimming="WordEllipsis"  Grid.Row="0" Grid.Column="1" Name="FileName" Text="{Binding FileName}"
+                                               TextAlignment="Left" FontSize="{StaticResource PhoneFontSizeLarge}" />
+                                    <!--There's something weird going on with the StringFormat when files get saved. Keep an eye on that. Consider 
+                                    adding a FormattedDuration property to SavedAudio that just returns what I want-->
+                                    <TextBlock Grid.Row="0" Grid.Column="2" Name="FileDuration" Text="{Binding Duration, Converter={StaticResource TStoDTConverter},  StringFormat=mm\\:ss}" TextAlignment="Right" 
+                                               FontSize="{StaticResource PhoneFontSizeLarge}"/>
                                     <TextBlock Grid.Row="1" Grid.Column="1" Name="File Description" Text="{Binding Description}" 
                                                FontSize="{StaticResource PhoneFontSizeSmall}" RenderTransformOrigin="0.551,0.48" Grid.ColumnSpan="2"
                                                TextWrapping="Wrap"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="2" Name="FileSize" Text="{Binding FileSize}" TextAlignment="Right"
+                                               FontSize="{StaticResource PhoneFontSizeSmall}" />
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>

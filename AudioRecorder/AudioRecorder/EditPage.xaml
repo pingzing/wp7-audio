@@ -37,7 +37,7 @@
     </toolkit:TransitionService.NavigationOutTransition>
 
     <phone:PhoneApplicationPage.Resources>
-        <vm:EditPageViewModel x:Key="ViewModel" />
+        <vm:EditPageViewModel x:Key="ViewModel" />               
     </phone:PhoneApplicationPage.Resources>
 
         <!--LayoutRoot is the root grid where all page content is placed-->
@@ -62,7 +62,22 @@
                 <TextBox x:Name="descriptionBox" Text="{Binding Description, Mode=TwoWay}"/>
                 
             </StackPanel>
-        </Grid>
+        </Grid>       
     </Grid>
+    
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Media/appbar.check.rest.png" Text="confirm" IsEnabled="True" Click="Confirm_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Media/appbar.close.rest.png" Text="cancel" IsEnabled="True" Click="Cancel_Click"/>
+
+            <shell:ApplicationBar.MenuItems>
+                <!--Menu Items Here-->
+            </shell:ApplicationBar.MenuItems>
+
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+
+
 
 </phone:PhoneApplicationPage>

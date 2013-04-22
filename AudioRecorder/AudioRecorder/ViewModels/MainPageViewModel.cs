@@ -31,6 +31,7 @@ namespace AudioRecorder.ViewModels
         bool stopRequested;        
         MemoryStream currentRecordingStream;
         public byte[] currentDataBuffer;
+        TimeSpan recordingDuration;
         ObservableCollection<SavedAudio> savedAudio = new ObservableCollection<SavedAudio>();
 
         public MainPageViewModel()
@@ -60,10 +61,10 @@ namespace AudioRecorder.ViewModels
                             XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<SavedAudio>));
                             using (XmlWriter xmlWriter = XmlWriter.Create(stream, xmlWriterSettings))
                             {
-                                serializer.Serialize(xmlWriter, GenerateFirstTimeData());                                                             
+                                serializer.Serialize(xmlWriter, savedAudio);                                                             
                             }                                                   
                         }
-                        //And populate the newly-created file
+                        //And populate the savedAudio collection
                         using (IsolatedStorageFileStream stream = isoStore.OpenFile(AUDIO_XML_FILENAME, FileMode.Open))
                         {
                             XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<SavedAudio>));
@@ -83,20 +84,6 @@ namespace AudioRecorder.ViewModels
             recordingInMemory = false;
         }
 
-        private object GenerateFirstTimeData()
-        {
-            SavedAudio file1 = new SavedAudio();
-            SavedAudio file2 = new SavedAudio();
-            savedAudio.Add(file1);
-            savedAudio.Add(file2);
-            return savedAudio;
-        }
-
-        public void navigateToSettings()
-        {
-            (Application.Current.RootVisual as PhoneApplicationFrame).Navigate(new Uri("/Settings.xaml", UriKind.Relative));
-        }
-
         private void RecordAction(object p)
         {
             System.Diagnostics.Debug.WriteLine("Running RecordAction.");
@@ -104,7 +91,7 @@ namespace AudioRecorder.ViewModels
             {
                 this.currentMicrophone = Microphone.Default;
                 this.currentMicrophone.BufferReady += new EventHandler<EventArgs>(currentMicrophone_BufferReady);
-                this.audioBuffer = new byte[this.currentMicrophone.GetSampleSizeInBytes(this.currentMicrophone.BufferDuration)];
+                this.audioBuffer = new byte[this.currentMicrophone.GetSampleSizeInBytes(TimeSpan.FromSeconds(1.0))];
                 this.sampleRate = this.currentMicrophone.SampleRate;
             }
             this.stopRequested = false;
@@ -124,6 +111,7 @@ namespace AudioRecorder.ViewModels
         {
             this.currentMicrophone.GetData(this.audioBuffer);
             this.currentRecordingStream.Write(this.audioBuffer, 0, this.audioBuffer.Length);
+            recordingDuration = Microphone.Default.GetSampleDuration((int)this.currentRecordingStream.Position);
             if (!this.stopRequested)
             {
                 return;
@@ -293,17 +281,17 @@ namespace AudioRecorder.ViewModels
             }
         }
 
-        public void UpdateEditedFile(SavedAudio editedSavedAudio)
+        public void UpdateEditedFile(SavedAudio editedSavedAudio, int _index)
         {
             //TODO: Update the XML file when we're leaving the app, so nothing goes haywire (see App.xaml.cs)
-            int index = savedAudio.IndexOf(selectedAudio);
+            int index = _index;
             //This fires anytime we load MainPage, so ensure that something is actually selected before doing anything
             if (index >= 0)
             {
                 savedAudio.ElementAt(index).Description = editedSavedAudio.Description;
-                savedAudio.ElementAt(index).FileName = editedSavedAudio.FileName;              
-            }
-          
+                savedAudio.ElementAt(index).FileName = editedSavedAudio.FileName;
+                UpdateXml();
+            }          
         }
 
         public void SaveRecording()
@@ -319,7 +307,7 @@ namespace AudioRecorder.ViewModels
                 var dataBuffer = currentDataBuffer;
                 targetFile.Write(dataBuffer, 0, (int)this.currentRecordingStream.Length);
                 //TODO: Debug values below. Generate these dynamically later
-                SavedAudio newFile = new SavedAudio((int)targetFile.Length, filePath, "Loooooooooooooog Description", DateTime.Now, "\\" + filePath+".wav", "\\" + filePath+".wav");
+                SavedAudio newFile = new SavedAudio((int)targetFile.Length, DateTime.Now.ToString(), "", DateTime.Now, "\\" + filePath+".wav", recordingDuration);
                 savedAudio.Add(newFile);
                 targetFile.Flush();
                 targetFile.Close();
@@ -364,6 +352,31 @@ namespace AudioRecorder.ViewModels
             //END DEBUG
             isoStore.Dispose();
         }
+
         
+        internal void UpdateXml()
+        {
+            try
+            {
+                using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    //Open the XML file and rewrite it with a new list of audio
+                    XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
+                    xmlWriterSettings.Indent = true;
+                    using (IsolatedStorageFileStream stream = isoStore.OpenFile(AUDIO_XML_FILENAME, FileMode.OpenOrCreate))
+                    {
+                        XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<SavedAudio>));
+                        using (XmlWriter xmlWriter = XmlWriter.Create(stream, xmlWriterSettings))
+                        {
+                            serializer.Serialize(xmlWriter, savedAudio);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+            }            
+        }
     }
 }

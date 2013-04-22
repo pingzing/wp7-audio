@@ -39,7 +39,8 @@ namespace AudioRecorder
         private void Edit_Click(object sender, System.EventArgs e)
         {
             ((App)App.Current).sharedAudio = (SavedAudio)savedItemsList.SelectedItem;
-            NavigationService.Navigate(new Uri("/EditPage.xaml", UriKind.Relative));
+            string indexParam = savedItemsList.SelectedIndex.ToString();
+            NavigationService.Navigate(new Uri(string.Format("/EditPage.xaml?index={0}", indexParam), UriKind.Relative));
         }
 
         private void Select_Click(object sender, System.EventArgs e)
@@ -51,7 +52,7 @@ namespace AudioRecorder
 
         private void Delete_Click(object sender, System.EventArgs e)
         {
- 
+            //TODO: Implement me
         }
 
         private void Save_Click(object sender, System.EventArgs e)
@@ -91,8 +92,22 @@ namespace AudioRecorder
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            var viewModel = (AudioRecorder.ViewModels.MainPageViewModel)this.DataContext;
-            viewModel.UpdateEditedFile(((App)App.Current).sharedAudio);
+            //Make sure we only update the file if we actually came from the EditPage
+            var prevPage = NavigationService.BackStack.FirstOrDefault();
+            if (prevPage != null && prevPage.Source.ToString().Contains("/EditPage.xaml"))
+            {
+                string strIndex = null;
+                NavigationContext.QueryString.TryGetValue("index", out strIndex);
+                var viewModel = (AudioRecorder.ViewModels.MainPageViewModel)this.DataContext;
+                viewModel.UpdateEditedFile(((App)App.Current).sharedAudio, Convert.ToInt32(strIndex));
+
+                //Bring us back to the "saved" pivot page
+                string pivotIndex = "";
+                if (NavigationContext.QueryString.TryGetValue("id", out pivotIndex))
+                {
+                    MainPagePivot.SelectedIndex = Convert.ToInt32(pivotIndex);
+                }               
+            }
         }
     }
 }

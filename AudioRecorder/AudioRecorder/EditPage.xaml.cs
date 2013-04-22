@@ -14,6 +14,9 @@ namespace AudioRecorder
     public partial class EditPage : PhoneApplicationPage
     {
         public SavedAudio audioToEdit = new SavedAudio();
+        private SavedAudio oldAudio = new SavedAudio();
+        string indexToPass = null;
+
         public EditPage()
         {
             InitializeComponent();
@@ -23,15 +26,32 @@ namespace AudioRecorder
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);            
-            audioToEdit = ((App)App.Current).sharedAudio;
+            audioToEdit = ((App)App.Current).sharedAudio;            
             fileNameBox.DataContext = audioToEdit;
             descriptionBox.DataContext = audioToEdit;
+
+            //fill in oldAudio with all of sharedAudio's attributes, but don't make it a reference type
+            oldAudio.Description = ((App)App.Current).sharedAudio.Description;
+            oldAudio.FileName = ((App)App.Current).sharedAudio.FileName;
+            oldAudio.FilePath = ((App)App.Current).sharedAudio.FilePath;
+            oldAudio.FileSize = ((App)App.Current).sharedAudio.FileSize;
+            oldAudio.Duration = ((App)App.Current).sharedAudio.Duration;
+            oldAudio.TimeStamp = ((App)App.Current).sharedAudio.TimeStamp;
+            
+            NavigationContext.QueryString.TryGetValue("index", out this.indexToPass);
         }
 
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        private void Confirm_Click(object sender, EventArgs e)
         {
-            base.OnNavigatedFrom(e);
             ((App)App.Current).sharedAudio = audioToEdit;
-       }
+            NavigationService.Navigate(new Uri(string.Format("/MainPage.xaml?id=1&index{0}", indexToPass), UriKind.Relative));
+            
+        }
+
+        private void Cancel_Click(object sender, EventArgs e)
+        {
+            ((App)App.Current).sharedAudio = oldAudio;            
+            NavigationService.Navigate(new Uri(string.Format("/MainPage.xaml?id=1&index{0}", indexToPass), UriKind.Relative));            
+        }
     }
 }
