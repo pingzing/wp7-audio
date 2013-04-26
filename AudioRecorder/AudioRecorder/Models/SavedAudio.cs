@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.Xml.Serialization;
 
 namespace AudioRecorder
 {
@@ -86,7 +87,8 @@ namespace AudioRecorder
                }
             }
         }
-
+        
+        [XmlIgnore]
         private TimeSpan duration;
         public TimeSpan Duration
         {
@@ -97,6 +99,28 @@ namespace AudioRecorder
                 {
                     this.duration = value;
                     OnPropertyChanged("Duration");
+                }
+            }
+        }
+
+        //Workaround to avoid inability to serialze TimeSpans
+        [XmlElement("Duration")]
+        public long DurationTicks
+        {
+            get { return duration.Ticks; }
+            set { duration = new TimeSpan(value); }
+        }
+        
+        private string formattedDuration;
+        public string FormattedDuration
+        {
+            get {return duration.ToString("mm\\:ss");}
+            set 
+            {
+                if (this.formattedDuration != value)
+                {
+                    this.formattedDuration = value;
+                    OnPropertyChanged("FormattedDuration");
                 }
             }
         }

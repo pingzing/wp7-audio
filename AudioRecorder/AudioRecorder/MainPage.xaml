@@ -11,7 +11,6 @@
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:ec="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
     xmlns:vm="clr-namespace:AudioRecorder.ViewModels"
-    xmlns:helpers="clr-namespace:AudioRecorder.Helpers"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -45,7 +44,6 @@
     
     <phone:PhoneApplicationPage.Resources>
         <vm:MainPageViewModel x:Key="ViewModel" />
-        <helpers:TimespanToDateTimeConverter x:Key="TStoDTConverter"/>
         
         <shell:ApplicationBar x:Key="savedAppBar" IsVisible="True" IsMenuEnabled="True">
             <shell:ApplicationBarIconButton IconUri="/Media/appbar.transport.play.rest.png" Text="play" IsEnabled="False" Click="Play_Click"/>
@@ -101,7 +99,7 @@
                                                TextAlignment="Left" FontSize="{StaticResource PhoneFontSizeLarge}" />
                                     <!--There's something weird going on with the StringFormat when files get saved. Keep an eye on that. Consider 
                                     adding a FormattedDuration property to SavedAudio that just returns what I want-->
-                                    <TextBlock Grid.Row="0" Grid.Column="2" Name="FileDuration" Text="{Binding Duration, Converter={StaticResource TStoDTConverter},  StringFormat=mm\\:ss}" TextAlignment="Right" 
+                                    <TextBlock Grid.Row="0" Grid.Column="2" Name="FormattedFileDuration" Text="{Binding FormattedDuration}" TextAlignment="Right" 
                                                FontSize="{StaticResource PhoneFontSizeLarge}"/>
                                     <TextBlock Grid.Row="1" Grid.Column="1" Name="File Description" Text="{Binding Description}" 
                                                FontSize="{StaticResource PhoneFontSizeSmall}" RenderTransformOrigin="0.551,0.48" Grid.ColumnSpan="2"

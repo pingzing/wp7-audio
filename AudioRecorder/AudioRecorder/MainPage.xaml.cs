@@ -52,7 +52,8 @@ namespace AudioRecorder
 
         private void Delete_Click(object sender, System.EventArgs e)
         {
-            //TODO: Implement me
+            var viewModel = (AudioRecorder.ViewModels.MainPageViewModel)this.DataContext;
+            viewModel.DeleteSelected(savedItemsList.SelectedIndex);
         }
 
         private void Save_Click(object sender, System.EventArgs e)
