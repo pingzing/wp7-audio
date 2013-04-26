@@ -32,7 +32,7 @@ namespace AudioRecorder.ViewModels
         MemoryStream currentRecordingStream;
         public byte[] currentDataBuffer;
         TimeSpan recordingDuration;
-        ObservableCollection<SavedAudio> savedAudio = new ObservableCollection<SavedAudio>();
+        public ObservableCollection<SavedAudio> savedAudio = new ObservableCollection<SavedAudio>();
 
         public MainPageViewModel()
         {          
@@ -53,12 +53,13 @@ namespace AudioRecorder.ViewModels
                     }
                     else
                     {
-                        UpdateXml();
+                        GenerateXmlFile();
                     }
                 }
             }
             //This will fire if we have a corrupted XML file and recreate it from scratch. 
             //TODO: Consider warning the user if this happens. It's kinda important.
+            //TODO: Make this way more robust. Currently, it loses at least one file per regeneration. Maybe run thorugh the list of items in isoStorage and manually regenerate the XML.
             catch (System.InvalidOperationException ex)
             {
                 System.Diagnostics.Debug.WriteLine("Error loading XML file. Regenerating.");
@@ -96,7 +97,7 @@ namespace AudioRecorder.ViewModels
                             serializer.Serialize(xmlWriter, savedAudio);
                         }
                     }
-                    //And populate the savedAudio collection
+                    //And repopulate the savedAudio collection with all valid files
                     using (IsolatedStorageFileStream stream = isoStore.OpenFile(AUDIO_XML_FILENAME, FileMode.Open))
                     {
                         XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<SavedAudio>));
@@ -315,7 +316,7 @@ namespace AudioRecorder.ViewModels
             int index = _index;
             //This fires anytime we load MainPage, so ensure that something is actually selected before doing anything
             if (index >= 0)
-            {
+            {                
                 savedAudio.ElementAt(index).Description = editedSavedAudio.Description;
                 savedAudio.ElementAt(index).FileName = editedSavedAudio.FileName;
                 UpdateXml();
@@ -347,7 +348,6 @@ namespace AudioRecorder.ViewModels
                     recordingInMemory = false;
                     ToggleSaveButton();
                 }
-
                 SavedAudio newFile = new SavedAudio((int)targetFile.Length, DateTime.Now.ToString(), "", DateTime.Now, "\\" + filePath+".wav", recordingDuration);
                 savedAudio.Add(newFile);
                 targetFile.Flush();
@@ -423,7 +423,7 @@ namespace AudioRecorder.ViewModels
         internal void DeleteSelected(int _index)
         {
             int index = _index;
-            string filePathToDelete = savedAudio.ElementAt(index).FilePath;
+            string filePathToDelete = savedAudio.ElementAt(index).FilePath;           
             savedAudio.RemoveAt(index);
             UpdateXml();
             try

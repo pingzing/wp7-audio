@@ -82,9 +82,10 @@
                              toolkit:TiltEffect.IsTiltEnabled="True" 
                              ItemsSource="{Binding ListItemsSource, Mode=TwoWay}"
                              SelectedItem="{Binding SelectedAudio, Mode=TwoWay}" SelectionChanged="savedItemsList_SelectionChanged">
+                        
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Grid>
+                                <Grid>                                
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="*"   />
@@ -92,13 +93,11 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="290"/>
-                                        <ColumnDefinition Width="90" />                                        
+                                        <ColumnDefinition Width="90*" />                                        
                                     </Grid.ColumnDefinitions>
                                     <CheckBox x:Name="selectCheckBoxes" Grid.Column="0" Visibility="Collapsed" IsChecked="False"/>
                                     <TextBlock TextTrimming="WordEllipsis"  Grid.Row="0" Grid.Column="1" Name="FileName" Text="{Binding FileName}"
-                                               TextAlignment="Left" FontSize="{StaticResource PhoneFontSizeLarge}" />
-                                    <!--There's something weird going on with the StringFormat when files get saved. Keep an eye on that. Consider 
-                                    adding a FormattedDuration property to SavedAudio that just returns what I want-->
+                                               TextAlignment="Left" FontSize="{StaticResource PhoneFontSizeLarge}" />                                    
                                     <TextBlock Grid.Row="0" Grid.Column="2" Name="FormattedFileDuration" Text="{Binding FormattedDuration}" TextAlignment="Right" 
                                                FontSize="{StaticResource PhoneFontSizeLarge}"/>
                                     <TextBlock Grid.Row="1" Grid.Column="1" Name="File Description" Text="{Binding Description}" 

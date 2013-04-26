@@ -18,7 +18,7 @@ namespace AudioRecorder
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        // Constructor
+        // Constructor        
         public MainPage()
         {            
             InitializeComponent();
@@ -39,8 +39,7 @@ namespace AudioRecorder
         private void Edit_Click(object sender, System.EventArgs e)
         {
             ((App)App.Current).sharedAudio = (SavedAudio)savedItemsList.SelectedItem;
-            string indexParam = savedItemsList.SelectedIndex.ToString();
-            NavigationService.Navigate(new Uri(string.Format("/EditPage.xaml?index={0}", indexParam), UriKind.Relative));
+            NavigationService.Navigate(new Uri("/EditPage.xaml", UriKind.Relative));
         }
 
         private void Select_Click(object sender, System.EventArgs e)
@@ -48,6 +47,7 @@ namespace AudioRecorder
            //Move this code into viewModel later
             //For this to pop up the checkbox, gonna have to look into Visual Styles. See http://stackoverflow.com/questions/4957336/wp7-change-the-visibility-of-an-item-in-a-selected-listbox-item
             //for details
+            //CANDIDATE FOR REMOVAL
         }
 
         private void Delete_Click(object sender, System.EventArgs e)
@@ -92,15 +92,14 @@ namespace AudioRecorder
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            base.OnNavigatedTo(e);
-            //Make sure we only update the file if we actually came from the EditPage
-            var prevPage = NavigationService.BackStack.FirstOrDefault();
-            if (prevPage != null && prevPage.Source.ToString().Contains("/EditPage.xaml"))
+            
+            base.OnNavigatedTo(e);      
+            //Make sure we only update the file if we actually came from the EditPage                        
+            if (PhoneApplicationService.Current.State.ContainsKey("pageFrom") && PhoneApplicationService.Current.State["pageFrom"] == "editPage")
             {
-                string strIndex = null;
-                NavigationContext.QueryString.TryGetValue("index", out strIndex);
+                PhoneApplicationService.Current.State["pageFrom"] = "mainPage";
                 var viewModel = (AudioRecorder.ViewModels.MainPageViewModel)this.DataContext;
-                viewModel.UpdateEditedFile(((App)App.Current).sharedAudio, Convert.ToInt32(strIndex));
+                viewModel.UpdateEditedFile(((App)App.Current).sharedAudio, Convert.ToInt32(savedItemsList.SelectedIndex));
 
                 //Bring us back to the "saved" pivot page
                 string pivotIndex = "";

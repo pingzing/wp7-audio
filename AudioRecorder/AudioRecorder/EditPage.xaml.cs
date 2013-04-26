@@ -44,14 +44,21 @@ namespace AudioRecorder
         private void Confirm_Click(object sender, EventArgs e)
         {
             ((App)App.Current).sharedAudio = audioToEdit;
-            NavigationService.Navigate(new Uri(string.Format("/MainPage.xaml?id=1&index{0}", indexToPass), UriKind.Relative));
-            
+            PhoneApplicationService.Current.State["pageFrom"] = "editPage";
+            if (NavigationService.CanGoBack)
+            {
+                NavigationService.GoBack();
+            }
         }
 
         private void Cancel_Click(object sender, EventArgs e)
         {
-            ((App)App.Current).sharedAudio = oldAudio;            
-            NavigationService.Navigate(new Uri(string.Format("/MainPage.xaml?id=1&index{0}", indexToPass), UriKind.Relative));            
+            ((App)App.Current).sharedAudio = oldAudio;
+            if (NavigationService.CanGoBack)
+            {
+                PhoneApplicationService.Current.State["pageFrom"] = "editPage";
+                NavigationService.GoBack();
+            }
         }
     }
 }
