@@ -81,12 +81,19 @@ namespace AudioRecorder
 
         private void savedItemsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //try to find a way to move this into the viewmodel if possible. hack-fix for now, may have to ship it anyway
-            if (e.AddedItems != null)
+            //try to find a way to move this into the viewmodel if possible. hack-fix for now, may have to ship it anyway           
+            if (e.AddedItems != null && savedItemsList.SelectedIndex >= 0)
             {
                 ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).IsEnabled = true;
                 ((ApplicationBarIconButton)ApplicationBar.Buttons[1]).IsEnabled = true;
                 ((ApplicationBarIconButton)ApplicationBar.Buttons[2]).IsEnabled = true;
+            }
+            //Re-disable if nothing is selected
+            else
+            {
+                ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).IsEnabled = false;
+                ((ApplicationBarIconButton)ApplicationBar.Buttons[1]).IsEnabled = false;
+                ((ApplicationBarIconButton)ApplicationBar.Buttons[2]).IsEnabled = false;
             }
         }
 
