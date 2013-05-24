@@ -12,9 +12,13 @@ using System.Windows.Shapes;
 using System.Xml.Serialization;
 
 namespace AudioRecorder
-{
+{      
     public class SavedAudio : INotifyPropertyChanged
     {
+        const int BYTES_PER_GIGABYTE = 1073741824;
+        const int BYTES_PER_MEGABYTE = 1048576;
+        const int BYTES_PER_KILOBYTE = 1024;
+
         private int fileSize;
         public int FileSize
         {
@@ -121,6 +125,39 @@ namespace AudioRecorder
                 {
                     this.formattedDuration = value;
                     OnPropertyChanged("FormattedDuration");
+                }
+            }
+        }
+
+        [XmlIgnore]
+        private string formattedFileSize;
+        public string FormattedFileSize
+        {
+            get 
+            {
+                if (this.fileSize > BYTES_PER_GIGABYTE)
+                {
+                    return ((float)this.fileSize / BYTES_PER_GIGABYTE).ToString("n2") +" GB";
+                }
+                else if (this.fileSize > BYTES_PER_MEGABYTE)
+                {
+                    return ((float)this.fileSize / BYTES_PER_MEGABYTE).ToString("n2") +" MB";
+                }
+                else if (this.fileSize > BYTES_PER_KILOBYTE)
+                {
+                    return ((float)this.fileSize / BYTES_PER_KILOBYTE).ToString("n2") +" KB";
+                }
+                else
+                {
+                    return this.fileSize + " B";
+                }
+            }
+            set 
+            {
+                if (this.formattedFileSize != value)
+                {
+                    this.formattedFileSize = value;
+                    OnPropertyChanged("FormattedFileSize");
                 }
             }
         }

@@ -72,6 +72,7 @@
                         VerticalAlignment="Center" Width="304" Margin="0" Command="{Binding RecordCommand}" />
                     <Button x:Name="stopButton" Content="Stop" HorizontalAlignment="Center" Height="106" 
                         VerticalAlignment="Center" Width="304" Margin="0" Command="{Binding StopCommand}" />
+                    <TextBlock x:Name="fileSizeTimer" Text="{Binding RecordingDuration}"/>
                 </StackPanel>
             </controls:PivotItem>
                 
@@ -81,30 +82,39 @@
                     <ListBox x:Name="savedItemsList" Margin="12,0,12,0"
                              toolkit:TiltEffect.IsTiltEnabled="True" 
                              ItemsSource="{Binding ListItemsSource, Mode=TwoWay}"
-                             SelectedItem="{Binding SelectedAudio, Mode=TwoWay}" SelectionChanged="savedItemsList_SelectionChanged">
+                             SelectedItem="{Binding SelectedAudio, Mode=TwoWay}" SelectionChanged="savedItemsList_SelectionChanged"
+                             HorizontalAlignment="Stretch">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment"
+                                        Value="Stretch"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
                         
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>                                
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*"/>
-                                        <RowDefinition Height="*"   />
+                                        <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="290"/>
+                                        <ColumnDefinition Width="290*"/>
                                         <ColumnDefinition Width="90*" />                                        
                                     </Grid.ColumnDefinitions>
                                     <CheckBox x:Name="selectCheckBoxes" Grid.Column="0" Visibility="Collapsed" IsChecked="False"/>
                                     <TextBlock TextTrimming="WordEllipsis"  Grid.Row="0" Grid.Column="1" Name="FileName" Text="{Binding FileName}"
-                                               TextAlignment="Left" FontSize="{StaticResource PhoneFontSizeLarge}" />                                    
+                                               TextAlignment="Left" FontSize="{StaticResource PhoneFontSizeLarge}" HorizontalAlignment="Left" />                                    
                                     <TextBlock Grid.Row="0" Grid.Column="2" Name="FormattedFileDuration" Text="{Binding FormattedDuration}" TextAlignment="Right" 
-                                               FontSize="{StaticResource PhoneFontSizeLarge}"/>
+                                               FontSize="{StaticResource PhoneFontSizeLarge}" HorizontalAlignment="Right" />
+                                    
+                                    <!--This text block has a hard-set margin so descriptions don't overrun filesizes. Find more elegant solution to this -->
                                     <TextBlock Grid.Row="1" Grid.Column="1" Name="File Description" Text="{Binding Description}" 
                                                FontSize="{StaticResource PhoneFontSizeSmall}" RenderTransformOrigin="0.551,0.48" Grid.ColumnSpan="2"
-                                               TextWrapping="Wrap"/>
-                                    <TextBlock Grid.Row="1" Grid.Column="2" Name="FileSize" Text="{Binding FileSize}" TextAlignment="Right"
-                                               FontSize="{StaticResource PhoneFontSizeSmall}" />
+                                               TextWrapping="Wrap" HorizontalAlignment="Left" Margin="0,0,100,0"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="2" Name="FileSize" Text="{Binding FormattedFileSize}" TextAlignment="Right"
+                                               FontSize="{StaticResource PhoneFontSizeSmall}" HorizontalAlignment="Right" />
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>

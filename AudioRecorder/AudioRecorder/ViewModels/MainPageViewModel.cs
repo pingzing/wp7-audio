@@ -27,11 +27,26 @@ namespace AudioRecorder.ViewModels
                 
         private Microphone currentMicrophone;
         private int sampleRate;
-        byte[] audioBuffer;        
+        byte[] audioBuffer;   
         bool stopRequested;        
         MemoryStream currentRecordingStream;
         public byte[] currentDataBuffer;
         TimeSpan recordingDuration;
+        public TimeSpan RecordingDuration
+        {
+            get 
+            {
+                if (recordingDuration != null)
+                    return this.recordingDuration;
+                else
+                    return TimeSpan.Zero;
+            }
+            set 
+            { 
+                this.recordingDuration = value;
+                OnPropertyChanged("RecordingDuration");
+            }
+        }
         public ObservableCollection<SavedAudio> savedAudio = new ObservableCollection<SavedAudio>();
 
         public MainPageViewModel()

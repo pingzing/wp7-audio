@@ -60,5 +60,15 @@ namespace AudioRecorder
                 NavigationService.GoBack();
             }
         }
+
+        private void fileNameBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            fileNameBox.SelectAll();
+        }
+
+        private void descriptionBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            descriptionBox.SelectAll();
+        }
     }
 }

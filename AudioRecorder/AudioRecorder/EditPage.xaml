@@ -57,9 +57,9 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <StackPanel>
                 <TextBlock Text="File name" Margin="12,0,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
-                <TextBox x:Name="fileNameBox" Text="{Binding FileName, Mode=TwoWay}"/>
+                <TextBox x:Name="fileNameBox" Text="{Binding FileName, Mode=TwoWay}" GotFocus="fileNameBox_GotFocus"/>
                 <TextBlock Text="Description" Margin="12,0,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
-                <TextBox x:Name="descriptionBox" Text="{Binding Description, Mode=TwoWay}"/>
+                <TextBox x:Name="descriptionBox" Text="{Binding Description, Mode=TwoWay}" GotFocus="descriptionBox_GotFocus"/>
                 
             </StackPanel>
         </Grid>       
