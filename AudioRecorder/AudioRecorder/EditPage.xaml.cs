@@ -69,6 +69,7 @@ namespace AudioRecorder
         private void descriptionBox_GotFocus(object sender, RoutedEventArgs e)
         {
             descriptionBox.SelectAll();
+            //commit test
         }
     }
 }
