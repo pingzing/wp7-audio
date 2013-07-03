@@ -11,6 +11,7 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -28,10 +29,11 @@ namespace AudioRecorder.ViewModels
         private Microphone currentMicrophone;
         private int sampleRate;
         byte[] audioBuffer;   
-        bool stopRequested;        
+        private bool stopRequested;        
         MemoryStream currentRecordingStream;
         public byte[] currentDataBuffer;
-        TimeSpan recordingDuration;
+
+        private TimeSpan recordingDuration;
         public TimeSpan RecordingDuration
         {
             get 
@@ -144,6 +146,7 @@ namespace AudioRecorder.ViewModels
             //Write the initial header to the WAVE file. This'll be updated after we finish recording.
             WriteHeader(this.currentRecordingStream, (int)this.currentMicrophone.SampleRate);
             this.currentMicrophone.Start();
+
         }
 
         public void RequestStopRecordingAction(object p)
@@ -155,7 +158,7 @@ namespace AudioRecorder.ViewModels
         {
             this.currentMicrophone.GetData(this.audioBuffer);
             this.currentRecordingStream.Write(this.audioBuffer, 0, this.audioBuffer.Length);
-            recordingDuration = Microphone.Default.GetSampleDuration((int)this.currentRecordingStream.Position);
+            RecordingDuration = Microphone.Default.GetSampleDuration((int)this.currentRecordingStream.Position);           
             if (!this.stopRequested)
             {
                 return;

@@ -11,6 +11,7 @@
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:ec="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
     xmlns:vm="clr-namespace:AudioRecorder.ViewModels"
+    xmlns:helpers="clr-namespace:AudioRecorder.Helpers"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -44,6 +45,7 @@
     
     <phone:PhoneApplicationPage.Resources>
         <vm:MainPageViewModel x:Key="ViewModel" />
+        <helpers:TimeSpanToStringConverter x:Key="TSToStrConv"/>
         
         <shell:ApplicationBar x:Key="savedAppBar" IsVisible="True" IsMenuEnabled="True">
             <shell:ApplicationBarIconButton IconUri="/Media/appbar.transport.play.rest.png" Text="play" IsEnabled="False" Click="Play_Click"/>
@@ -72,7 +74,7 @@
                         VerticalAlignment="Center" Width="304" Margin="0" Command="{Binding RecordCommand}" />
                     <Button x:Name="stopButton" Content="Stop" HorizontalAlignment="Center" Height="106" 
                         VerticalAlignment="Center" Width="304" Margin="0" Command="{Binding StopCommand}" />
-                    <TextBlock x:Name="fileSizeTimer" Text="{Binding RecordingDuration}"/>
+                    <TextBlock x:Name="fileSizeTimer" Text="{Binding RecordingDuration, Mode=OneWay, Converter={StaticResource TSToStrConv}}" />
                 </StackPanel>
             </controls:PivotItem>
                 

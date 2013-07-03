@@ -46,8 +46,7 @@ namespace AudioRecorder
         {
            //Move this code into viewModel later
             //For this to pop up the checkbox, gonna have to look into Visual Styles. See http://stackoverflow.com/questions/4957336/wp7-change-the-visibility-of-an-item-in-a-selected-listbox-item
-            //for details
-            //CANDIDATE FOR REMOVAL
+            //for details            
         }
 
         private void Delete_Click(object sender, System.EventArgs e)
