@@ -44,5 +44,4 @@ C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\Bin\Deb
 C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\Bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight.pdb
 C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\Bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight.xml
 C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\Bin\Debug\IsolatedStorageExplorer.dll
-C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\obj\Debug\AudioRecorder.csprojResolveAssemblyReference.cache
 C:\Users\Neil\Desktop\Repositories\wp7_audio\AudioRecorder\AudioRecorder\obj\Debug\EditPage.g.cs
